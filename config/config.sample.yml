@@ -1,0 +1,3 @@
+gist_api: https://api.github.com/gists
+console_regex: !ruby/regexp /(.*)\s(true|false)\s(.*)/
+chunk_size: 5000
