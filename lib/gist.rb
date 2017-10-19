@@ -1,11 +1,9 @@
 require 'pathname'
 require_relative './request'
-require_relative './progressBar'
-require_relative './fileReader'
+require_relative './file_reader'
 
 class Gist
   include Request
-  include ProgressBar
   include FileReader
 
   attr_reader :gist
@@ -20,8 +18,8 @@ class Gist
 
   def upload
     response = Request.post(@gist)
-    body = JSON.parse(response.body)
-    response.code == '201' ? body["html_url"] : body
+    body = response[:body]
+    response[:code] == '201' ? body["html_url"] : body
   end
 
 end
@@ -30,12 +28,12 @@ def createDocuments(path)
   files = {}
   if pathExists?(path)
     if File.directory?(path)
-      procdir(path).each do |filePath|
-        pathName = Pathname(filePath)
-        files[pathName.basename] = {content: FileReader.read(filePath)}
+      procdir(path).each do |file_path|
+        path_name = Pathname(file_path)
+        files[path_name.basename.to_s] = {content: FileReader.read(file_path)}
       end
     else
-      files[Pathname(path).basename] = {content: FileReader.read(path)}
+      files[Pathname(path).basename.to_s] = {content: FileReader.read(path)}
     end
     files
   else
