@@ -1,5 +1,5 @@
 require 'yaml'
-require_relative './progressBar'
+require_relative './progress_bar'
 
 module FileReader
   @config = YAML.load_file('config/config.yml')
